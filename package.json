@@ -1,0 +1,24 @@
+{
+  "name": "card-name",
+  "version": "0.1.0",
+  "description": "Card name social image",
+  "main": "index.js",
+  "author": "Satya Wikananda",
+  "license": "MIT",
+  "scripts": {
+    "deploy:dev": "vercel",
+    "deploy:prod": "vercel --prod",
+    "develop": "vercel dev"
+  },
+  "devDependencies": {
+    "@types/prettier": "^2.1.5",
+    "@vercel/node": "^1.8.4",
+    "prettier": "^2.1.2",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.5"
+  },
+  "dependencies": {
+    "hero-patterns": "^2.1.0",
+    "isomorphic-unfetch": "^3.1.0"
+  }
+}
