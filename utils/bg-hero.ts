@@ -21,7 +21,7 @@ interface GetPattern {
     [key: string]: any;
 }
 
-const getPattern = (pattern: any, opacity: string): string => {
+const getPattern = (pattern: any, opacity: string, colorPattern: string): string => {
     const patternMapping: GetPattern = {
         [HeroPattern.brickWall]: brickWall,
         [HeroPattern.bubbles]: bubbles,
@@ -40,7 +40,7 @@ const getPattern = (pattern: any, opacity: string): string => {
         [HeroPattern.wiggle]: wiggle,
     };
     const patternFunc = patternMapping[pattern];
-    const fillOpacity = ['#eaeaea', opacity];
+    const fillOpacity = [colorPattern, opacity];
     return patternFunc.apply(null, fillOpacity);
 };
 

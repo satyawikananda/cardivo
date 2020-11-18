@@ -27,6 +27,7 @@ export interface ParsedRequest {
     name: string | string[]
     description: string | string[]
     _image: string | string[]
+    colorPattern: string | string[]
     fontColor?: string | string[]
     iconColor?: string | string[]
     backgroundColor?: string | string[]

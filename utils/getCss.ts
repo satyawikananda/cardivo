@@ -8,7 +8,7 @@ const monserrat700 = readFileSync(
     `${__dirname}/../fonts/montserrat-v15-latin-regular.woff2`
   ).toString("base64")
   
-export const css = ({ backgroundColor, pattern, opacity, fontColor }): string => {
+export const css = ({ backgroundColor, pattern, opacity, colorPattern , fontColor }): string => {
     return `
       @font-face{
         font-family: 'Montserrat';
@@ -55,7 +55,7 @@ export const css = ({ backgroundColor, pattern, opacity, fontColor }): string =>
       }
       .card-wrapper {
         background: ${backgroundColor};
-        ${pattern == undefined ? '' : `background-image: ${getPattern(`${pattern}`, `${opacity}`)};`}
+        ${pattern == undefined ? '' : `background-image: ${getPattern(`${pattern}`, `${opacity}`, `${colorPattern}`)};`}
         width: 640px !important;
         height: 320px !important;
         margin: 0;

@@ -10,6 +10,7 @@ export function cardRender(parsedRequest: ParsedRequest) {
     backgroundColor,
     iconColor,
     pattern,
+    colorPattern,
     fontColor,
     _site,
     opacity,
@@ -80,7 +81,7 @@ export function cardRender(parsedRequest: ParsedRequest) {
               </div>
             </div>
         </foreignObject>
-        <style>${css({ backgroundColor, pattern, opacity, fontColor })}</style>
+        <style>${css({ backgroundColor, pattern, opacity, colorPattern, fontColor })}</style>
       </svg>
   `
 }

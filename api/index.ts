@@ -4,8 +4,8 @@ import toBase64ImageUrl from "../utils/toBase64"
 
 export default async function render(req: NowRequest, res: NowResponse) {
     try {
-        const { name, description, image, backgroundColor, iconColor, site, fontColor, pattern, opacity, instagram, linkedin, github, twitter  } = req.query;
-        // Handle Undefined
+        const { name, description, image, backgroundColor, iconColor, site, fontColor, pattern, opacity, colorPattern, instagram, linkedin, github, twitter  } = req.query;
+        
         const _linkedin = linkedin ?? ''
         const _instagram = instagram ?? ''
         const _twitter = twitter ?? ''
@@ -20,6 +20,7 @@ export default async function render(req: NowRequest, res: NowResponse) {
             backgroundColor,
             _image,
             pattern,
+            colorPattern,
             _site,
             fontColor,
             opacity,
