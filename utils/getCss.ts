@@ -103,10 +103,12 @@ export const css = ({ backgroundColor, pattern, opacity, colorPattern , fontColo
         width: 100%;
       }
       div.line{
-        border: 0;
-        height: 1px;
-        background: #333;
-        background-image: linear-gradient(to right, #ccc, #333, #ccc);
+        width: 0%;
+        min-width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        border: none;
+        border-bottom: 1px solid #666;
       }
     `
 }
