@@ -39,13 +39,3 @@ export interface ParsedRequest {
     _github?: string | string[]
     _twitter?: string | string[]
 }
-
-export type RequiredConfigs = {
-    name: string
-    description: string
-    image: string
-    pattern: HeroPattern
-}
-
-type Configuration = RequiredConfigs
-export default Configuration
