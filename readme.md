@@ -11,7 +11,7 @@
 </div>
 
 # Description
-A few months ago, Github launched a new feature call Magic Readme which is that file readme will be appear in your github profile and you can set your skills, portfolio, etc in that file readme.
+A few months ago, GitHub launched a new feature call Magic Readme which is that file readme will be appear in your GitHub profile and you can set your skills, portfolio, etc in that file readme.
 
 Cardivo is a serverless dynamically card name based on SVG (Scalable Vector Graphics) which is you can make your own card name and set in your magic readme. For the tech stack, Cardivo using Typescript and serverless function from Vercel and also this project had been deployed on Vercel.
 
@@ -33,8 +33,8 @@ There are several options you can use, and the options is:
 | Color Pattern | Fill the color pattern | Hex color code | %231abc9c | ```?colorPattern=[value]``` |
 | Opacity Pattern | Opacity of the pattern background | Float | 0 - 1 | ```?opacity=[value]``` |
 | Instagram | Your Instagram username | String | satyawikananda | ```?instagram=[value]``` |
-| linkedin | Your Linkedin username | String | Satya Wikananda | ```?linkedin=[value]``` |
-| Github | Your Github username | String | satyawikananda | ```?github=[value]``` |
+| Linkedin | Your Linkedin username | String | Satya Wikananda | ```?linkedin=[value]``` |
+| GitHub | Your GitHub username | String | satyawikananda | ```?github=[value]``` |
 | Twitter | Your Twitter username | String | satya_wikananda | ```?twitter=[value]``` |
 
 > NB: Remove the square bracket
@@ -47,7 +47,7 @@ Pattern in Cardivo, i'm used the [Hero Pattern](https://github.com/lowmess/hero-
 | Topography | topography |
 | Texture | texture |
 | Hideout | hideout |
-| FallingTriangles | falllingTriangles |
+| FallingTriangles | fallingTriangles |
 | I Like Food | iLikeFood |
 | Four point stars | fourPointStars |
 | Brick wall | brickWall |
