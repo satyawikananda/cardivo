@@ -25,13 +25,16 @@ There are several options you can use, and the options is:
 
 |  Options  | Description |   Type     | Example | Query Params | 
 |---------- | ---------- | ------- | ----------- | ------------ |
-| Background Color | Background color for the card name | Hex color code | %23ffffff | ```?backgroundColor=[value]``` |
-| Icon Color | Colorize the icons in card name | Hex color code | %23e64a19 | ```?iconColor=[value]``` |
-| Font Color | Font color for the card name | Hex color code | %23000000 | ```?fontColor=[value]``` |
-| Site | If you have a site, you can fill this one | String | https://satyawikananda.tech | ```?site=[value]``` |
+| Name | **Mandatory** Your name | String | Satya Wikananda | ```?name=[value]``` |
+| Description | **Mandatory** Some text about you | String | I am a coder | ```?description=[value]``` |
+| Image | **Mandatory** An avatar image of you | URL | `https://example.com/image.jpg` | ```?image=[value]``` |
+| Background Color | Background color for the card name | Hex color code | `%23ffffff` | ```?backgroundColor=[value]``` |
+| Icon Color | Colorize the icons in card name | Hex color code | `%23e64a19` | ```?iconColor=[value]``` |
+| Font Color | Font color for the card name | Hex color code | `%23000000` | ```?fontColor=[value]``` |
+| Site | If you have a site, you can fill this one | String | `https://satyawikananda.tech` | ```?site=[value]``` |
 | Pattern | You can use a pattern for the background. You can see the list below | String | plus | ```?pattern=[value]``` |
-| Color Pattern | Fill the color pattern | Hex color code | %231abc9c | ```?colorPattern=[value]``` |
-| Opacity Pattern | Opacity of the pattern background | Float | 0 - 1 | ```?opacity=[value]``` |
+| Color Pattern | Fill the color pattern | Hex color code | `%231abc9c` | ```?colorPattern=[value]``` |
+| Opacity Pattern | Opacity of the pattern background | Float | `0` - `1` | ```?opacity=[value]``` |
 | Instagram | Your Instagram username | String | satyawikananda | ```?instagram=[value]``` |
 | Linkedin | Your Linkedin username | String | Satya Wikananda | ```?linkedin=[value]``` |
 | GitHub | Your GitHub username | String | satyawikananda | ```?github=[value]``` |
