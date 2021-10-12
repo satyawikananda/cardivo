@@ -76,7 +76,7 @@ export function cardRender(parsedRequest: ParsedRequest) {
                   </div>
                 </div>
                 <div class="card-wrapper-img">
-                  <img src="${_image}" class="card-img ${__disableAnimation === 'false' ? 'animate-image' : ''}" alt="image-${name}"/>
+                  <img src="${_image}" class="card-img ${__disableAnimation === 'false' ? 'animate-image' : ''}" style="${__disableAnimation === 'false' ? '' : 'transition: none;'}" alt="image-${name}"/>
                 </div>
               </div>
             </div>
