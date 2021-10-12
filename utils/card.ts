@@ -64,8 +64,8 @@ export function cardRender(parsedRequest: ParsedRequest) {
             <div xmlns="http://www.w3.org/1999/xhtml">
               <div class="card-wrapper">
                 <div class="card-wrapper-desc">
-                  <h1 class="font-monserrat700 ${!__disableAnimation ? 'animate-transition' : ''}">${name}</h1>
-                  <p class="font-monserratRegular ${!__disableAnimation ? 'animate-transition' : ''}">${description}</p>
+                  <h1 class="font-monserrat700 ${__disableAnimation === 'false' ? 'animate-transition' : ''}">${name}</h1>
+                  <p class="font-monserratRegular ${__disableAnimation === 'false' ? 'animate-transition' : ''}">${description}</p>
                   <div class="line"></div>
                   <p class="site font-monserratRegular">${_site}</p>
                   <div class="card-icon">
@@ -76,7 +76,7 @@ export function cardRender(parsedRequest: ParsedRequest) {
                   </div>
                 </div>
                 <div class="card-wrapper-img">
-                  <img src="${_image}" class="card-img ${!__disableAnimation ? 'animate-image' : ''}" alt="image-${name}"/>
+                  <img src="${_image}" class="card-img ${__disableAnimation === 'false' ? 'animate-image' : ''}" alt="image-${name}"/>
                 </div>
               </div>
             </div>

@@ -38,5 +38,5 @@ export interface ParsedRequest {
     _linkedin?: string | string[]
     _github?: string | string[]
     _twitter?: string | string[]
-    __disableAnimation?: boolean
+    __disableAnimation?: string | string[]
 }

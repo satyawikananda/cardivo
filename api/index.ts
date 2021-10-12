@@ -11,7 +11,7 @@ export default async function render(req: NowRequest, res: NowResponse) {
         const _twitter = twitter ?? ''
         const _github = github ?? ''
         const _site = site ?? ''
-        const __disableAnimation = Boolean(disableAnimation) ?? false
+        const __disableAnimation = disableAnimation ?? 'false'
         const _image = await toBase64ImageUrl(image)
 
         const card = cardRender({
