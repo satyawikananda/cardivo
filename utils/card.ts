@@ -16,7 +16,8 @@ export function cardRender(parsedRequest: ParsedRequest) {
     _instagram,
     _linkedin,
     _github,
-    _twitter
+    _twitter,
+    __disableAnimation = false
   } = parsedRequest
   const icons: Icons = {
     linkedin: `
@@ -63,8 +64,8 @@ export function cardRender(parsedRequest: ParsedRequest) {
             <div xmlns="http://www.w3.org/1999/xhtml">
               <div class="card-wrapper">
                 <div class="card-wrapper-desc">
-                  <h1 class="font-monserrat700 animate-transition">${name}</h1>
-                  <p class="font-monserratRegular animate-transition">${description}</p>
+                  <h1 class="font-monserrat700 ${__disableAnimation === 'false' ? 'animate-transition' : ''}">${name}</h1>
+                  <p class="font-monserratRegular ${__disableAnimation === 'false' ? 'animate-transition' : ''}">${description}</p>
                   <div class="line"></div>
                   <p class="site font-monserratRegular">${_site}</p>
                   <div class="card-icon">
@@ -75,7 +76,7 @@ export function cardRender(parsedRequest: ParsedRequest) {
                   </div>
                 </div>
                 <div class="card-wrapper-img">
-                  <img src="${_image}" class="card-img animate-image" alt="image-${name}"/>
+                  <img src="${_image}" class="card-img ${__disableAnimation === 'false' ? 'animate-image' : ''}" style="${__disableAnimation === 'false' ? '' : 'transition: none;'}" alt="image-${name}"/>
                 </div>
               </div>
             </div>
