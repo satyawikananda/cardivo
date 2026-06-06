@@ -1,2 +1,29 @@
-node_modules
-.vercel
+# Bun
+node_modules/
+dist/
+bun.lockb
+*.log
+
+# Bun runtime
+buncache/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Test
+coverage/
+
+# OS
+Thumbs.db

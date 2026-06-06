@@ -1,92 +1,185 @@
 <div align="center">
-<h1>Cardivo card name</h1>
 
-<p>Get your card name dynamically 😎</p>
+# Cardivo
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://raw.githubusercontent.com/satyawikananda/cardivo/main/LICENSE?token=AH44ZFH7IF2KSEDK7LSIW3C7YOFYC)
-[![Issue](https://img.shields.io/github/issues/satyawikananda/cardivo)](https://img.shields.io/github/issues/satyawikananda/cardivo)
-[![Forks](https://img.shields.io/github/forks/satyawikananda/cardivo)](https://img.shields.io/github/forks/satyawikananda/cardivo)
-[![Stars](https://img.shields.io/github/stars/satyawikananda/cardivo)](https://img.shields.io/github/stars/satyawikananda/cardivo)
+Get your card name dynamically and embed it in your GitHub Magic Readme.
+
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Runtime: Bun](https://img.shields.io/badge/Runtime-Bun-black)
+![Vercel: serverless](https://img.shields.io/badge/Vercel-serverless-black)
 
 </div>
 
-# Description
+## Description
 
-A few months ago, GitHub launched a new feature call Magic Readme which is that file readme will be appear in your GitHub profile and you can set your skills, portfolio, etc in that file readme.
+Cardivo is a serverless dynamic card name based on SVG (Scalable Vector
+Graphics). Drop a single Markdown image into your GitHub profile README and the
+SVG is generated on the fly from the query string. For tech, Cardivo uses
+**Bun + TypeScript**, a **framework-free middleware chain** for the HTTP layer,
+and runs on **Vercel serverless functions**.
 
-Cardivo is a serverless dynamically card name based on SVG (Scalable Vector Graphics) which is you can make your own card name and set in your magic readme. For the tech stack, Cardivo using Typescript and serverless function from Vercel and also this project had been deployed on Vercel.
+## Quick start
 
-# How to use this?
-
-It's simple, you can copy paste this markdown content, like this one:
+### Use it without installing
 
 ```
-![Satya Wikananda's card name](https://cardivo.vercel.app/api?name=[name]&description=[description]&image=[image_url])
+![Satya Wikananda's card](https://cardivo.vercel.app/api?name=Satya%20Wikananda&description=Hi%20there&image=https://avatars.githubusercontent.com/u/33148052?v=4)
 ```
 
-There are several options you can use, and the options is:
+### Run it locally
 
-| Options           | Description                                                          | Type           | Example                         | Query Params                |
-| ----------------- | -------------------------------------------------------------------- | -------------- | ------------------------------- | --------------------------- |
-| Name              | **Mandatory** Your name                                              | String         | Satya Wikananda                 | `?name=[value]`             |
-| Description       | **Mandatory** Some text about you                                    | String         | I am a coder                    | `?description=[value]`      |
-| Image             | **Mandatory** An avatar image of you                                 | URL            | `https://example.com/image.jpg` | `?image=[value]`            |
-| Background Color  | Background color for the card name                                   | Hex color code | `%23ffffff`                     | `?backgroundColor=[value]`  |
-| Icon Color        | Colorize the icons in card name                                      | Hex color code | `%23e64a19`                     | `?iconColor=[value]`        |
-| Font Color        | Font color for the card name                                         | Hex color code | `%23000000`                     | `?fontColor=[value]`        |
-| Site              | If you have a site, you can fill this one                            | String         | `https://satyawikananda.tech`   | `?site=[value]`             |
-| Pattern           | You can use a pattern for the background. You can see the list below | String         | plus                            | `?pattern=[value]`          |
-| Color Pattern     | Fill the color pattern                                               | Hex color code | `%231abc9c`                     | `?colorPattern=[value]`     |
-| Opacity Pattern   | Opacity of the pattern background                                    | Float          | `0` - `1`                       | `?opacity=[value]`          |
-| Instagram         | Your Instagram username                                              | String         | satyawikananda                  | `?instagram=[value]`        |
-| Linkedin          | Your Linkedin username                                               | String         | Satya Wikananda                 | `?linkedin=[value]`         |
-| GitHub            | Your GitHub username                                                 | String         | satyawikananda                  | `?github=[value]`           |
-| Twitter           | Your Twitter username                                                | String         | satya_wikananda                 | `?twitter=[value]`          |
-| Disable Animation | Disable animation transition                                         | Boolean        | `true`                          | `?disableAnimation=[value]` |
+```bash
+# 1. Install Bun (https://bun.sh)
+curl -fsSL https://bun.sh/install | bash
 
-> NB: Remove the square bracket
+# 2. Install deps
+bun install
 
-Pattern in Cardivo, i'm used the [Hero Pattern](https://github.com/lowmess/hero-patterns) package which is developed by [Lowmess](https://github.com/lowmess/), and here the list:
+# 3. Copy env
+cp .env.example .env
 
-| Pattern          | Value            |
-| ---------------- | ---------------- |
-| Plus             | plus             |
-| Topography       | topography       |
-| Texture          | texture          |
-| Hideout          | hideout          |
-| FallingTriangles | fallingTriangles |
-| I Like Food      | iLikeFood        |
-| Four point stars | fourPointStars   |
-| Brick wall       | brickWall        |
-| Wiggle           | wiggle           |
-| Bubbles          | bubbles          |
-| Floating Cogs    | floatingCogs     |
-| Leaf             | leaf             |
-| Rain             | rain             |
-| Polkadots        | polkadots        |
-| Tic Tac Toe      | ticTacToe        |
+# 4. Start the serverless handler in dev mode
+bun run dev
 
-# Example
-
-This is example of using cardivo:
-
-Markdown content:
-
-```md
-![Satya wikananda's card name](https://cardivo.vercel.app/api?name=Satya%20Wikananda&description=Hi,%20i%27m%20a%20front%20end%20web%20developer%20and%20i%27m%2020%20y.o.%20Nice%20to%20meet%20you%20%F0%9F%91%8B&image=https://avatars.githubusercontent.com/u/33148052?v=4&backgroundColor=%23ecf0f1&instagram=satyawikananda&linkedin=I%20Gusti%20Ngurah%20Satya%20%20Wikananda&github=satyawikananda&twitter=satya_wikananda&pattern=leaf&colorPattern=%23eaeaea)
+# 5. Hit it
+open "http://localhost:3000/api/card?name=Hello&description=World&image=https://avatars.githubusercontent.com/u/33148052?v=4"
 ```
 
-Result:
+### Deploy to Vercel
 
-![Satya wikananda's card name](https://cardivo.vercel.app/api?name=Satya%20Wikananda&description=Hi,%20i%27m%20a%20front%20end%20web%20developer%20and%20i%27m%2020%20y.o.%20Nice%20to%20meet%20you%20%F0%9F%91%8B&image=https://avatars.githubusercontent.com/u/33148052?v=4&backgroundColor=%23ecf0f1&instagram=satyawikananda&linkedin=I%20Gusti%20Ngurah%20Satya%20%20Wikananda&github=satyawikananda&twitter=satya_wikananda&pattern=leaf&colorPattern=%23eaeaea)
+```bash
+vercel        # dev
+vercel --prod # production
+```
 
-# Contribution
+Vercel auto-detects Bun and runs `api/index.ts` as a serverless function.
 
-Want to make this project better? You can contribute this project, I am very open if there are contributions to this project.
+## Architecture
 
----
+```
+                   ┌───────────────────────────────┐
+                   │       Vercel serverless       │
+                   │   api/index.ts  (handler)     │
+                   └───────────────┬───────────────┘
+                                   │
+                                   ▼
+                   ┌───────────────────────────────┐
+                   │     createApp()  (app.ts)     │
+                   │   framework-free middleware  │
+                   │     error → logger → cors     │
+                   └───────────────┬───────────────┘
+                                   │
+                                   ▼
+                   ┌───────────────────────────────┐
+                   │   routes/index.ts (table)     │
+                   │   GET /api   → card handler   │
+                   │   GET /api/card → card handler│
+                   └───────────────┬───────────────┘
+                                   │
+                                   ▼
+                   ┌───────────────────────────────┐
+                   │       src/lib/ (sidecar)      │
+                   │   card · getCss · toBase64    │
+                   │   bg-hero · fetcher · env     │
+                   │   logger · http               │
+                   └───────────────────────────────┘
+```
 
-![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)
-![forthebadge](https://forthebadge.com/images/badges/made-with-typescript.svg)
+- **`api/index.ts`** is the only thing Vercel needs. It exports a default
+  `(Request) => Promise<Response>` handler and delegates to `createApp()`.
+- **`src/app.ts`** is a tiny (~50 lines) framework-free HTTP layer — middleware
+  are `(request, next) => Response`, routes are a flat `[method, path, handler]`
+  table. Same shape as the `pio-bun-minimal-boilerplate` we use for other
+  Toya-Labs projects.
+- **`src/lib/`** is the sidecar everything shares: `cardRender()` produces the
+  raw SVG, `getCss()` inlines the embedded Montserrat font as `data:`
+  URLs, `toBase64()` fetches the avatar and inlines it, `fetcher` is a
+  thin `ofetch` wrapper used for the avatar fetch.
+- **No `server.ts` and no CLI.** The Vercel handler is the only entry point.
 
-Powered by Typescript and vercel. Code licensed under MIT License.
+## Folder structure
+
+```
+cardivo/
+├── api/
+│   └── index.ts          # Vercel serverless entry (the only entry point)
+├── src/
+│   ├── app.ts            # framework-free middleware chain
+│   ├── routes/
+│   │   ├── index.ts      # route table
+│   │   └── card/
+│   │       └── index.ts  # GET /api/card → cardRender()
+│   ├── middleware/
+│   │   ├── error-handler.ts
+│   │   └── logger.ts
+│   └── lib/
+│       ├── card.ts       # cardRender(): query → SVG string
+│       ├── getCss.ts     # cardRender()'s <style> body (with embedded fonts)
+│       ├── bg-hero.ts    # HeroPattern registry (typed)
+│       ├── toBase64.ts   # fetch URL → data: URL
+│       ├── fetcher.ts    # shared ofetch client
+│       ├── env.ts        # envalid schema
+│       ├── logger.ts     # winston
+│       ├── http.ts       # json/fail/HttpError helpers
+│       └── fonts.ts      # base64-encoded woff2 (generated)
+├── tests/                # bun:test
+├── api/                  # Vercel function entry
+├── bunfig.toml           # registry override
+├── eslint.config.js      # antfu v4 (no eslint-compat shim needed for v9)
+├── tsconfig.json         # strict TS, types: bun
+├── package.json
+├── LICENSE               # MIT
+└── README.md
+```
+
+## Query parameters
+
+| Name | Required | Type | Description |
+| --- | --- | --- | --- |
+| `name` | ✅ | string | Your display name |
+| `description` | ✅ | string | One-line bio |
+| `image` | ✅ | URL | Square avatar (will be base64-inlined) |
+| `backgroundColor` | | hex | Card background, e.g. `%23ecf0f1` |
+| `iconColor` | | hex | Social-icon color |
+| `fontColor` | | hex | Text color |
+| `site` | | URL | Personal site, shown above socials |
+| `pattern` | | string | One of the HeroPattern values (see below) |
+| `colorPattern` | | hex | Color of the pattern overlay |
+| `opacity` | | 0..1 | Pattern opacity |
+| `instagram` | | string | Instagram handle |
+| `linkedin` | | string | LinkedIn handle |
+| `github` | | string | GitHub handle |
+| `twitter` | | string | X/Twitter handle |
+| `disableAnimation` | | `true` | Skip the slide-in animation |
+
+## Patterns
+
+Cardivo uses [`hero-patterns`](https://github.com/lowmess/hero-patterns) by
+Lowmess. The accepted `?pattern=` values are:
+
+`plus` · `topography` · `texture` · `hideout` · `fallingTriangles` · `iLikeFood` ·
+`fourPointStars` · `brickWall` · `wiggle` · `bubbles` · `floatingCogs` · `leaf` ·
+`rain` · `polkaDots` · `ticTacToe`
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `bun run dev` | Vercel handler in watch mode |
+| `bun run start` | Vercel handler, no watch |
+| `bun run typecheck` | `tsc --noEmit` |
+| `bun run lint` | ESLint (antfu) |
+| `bun run lint:fix` | ESLint with `--fix` |
+| `bun run test` | bun:test |
+
+## Environment variables
+
+| Var | Default | Description |
+| --- | --- | --- |
+| `NODE_ENV` | `development` | `development` \| `test` \| `production` |
+| `LOG_LEVEL` | `info` | winston level |
+| `ALLOWED_IMAGE_HOST` | `*` | Restrict which host Cardivo will fetch avatars from (SSRF mitigation). Set to e.g. `avatars.githubusercontent.com` in production. |
+
+## License
+
+MIT © Satya Wikananda

@@ -1,11 +1,29 @@
 {
   "compilerOptions": {
-    "strict": false,
+    "target": "ES2022",
+    "lib": ["ESNext"],
+    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "resolveJsonModule": true,
+    "types": ["bun"],
+    "allowImportingTsExtensions": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmit": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
-    "target": "ES2018",
-    "module": "commonjs",
-    "sourceMap": false,
-    "declaration": true
-  }
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*", "api/**/*", "tests/**/*", "eslint.config.js", "src/types/**/*.d.ts"],
+  "exclude": ["node_modules", "dist", "logs", "coverage"]
 }
