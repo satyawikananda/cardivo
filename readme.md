@@ -90,3 +90,26 @@ Want to make this project better? You can contribute this project, I am very ope
 ![forthebadge](https://forthebadge.com/images/badges/made-with-typescript.svg)
 
 Powered by Typescript and vercel. Code licensed under MIT License.
+
+## Cardivo Studio (new)
+
+The root URL (`/`) is now **Cardivo Studio** — a frontend with a live card
+preview and controls for every API option (content, colors, gradients,
+all 15 patterns, alignment, avatar shape, width, socials, animation),
+plus one-click copy for the card URL, Markdown and HTML embeds and an
+SVG download. No more redirect to GitHub.
+
+### New / improved API options
+
+| Parameter | Description |
+| --- | --- |
+| `gradientColor`, `gradientAngle` | Linear-gradient background (second color + angle 0–360) |
+| `align` | `center` (default) or `left` text alignment |
+| `avatarShape` | `circle` (default), `rounded` or `square` |
+| `width` | SVG width 200–2400 (default 980), height scales 2:1 |
+
+Reliability upgrades: all text is XML-escaped, parameters are validated
+with safe defaults (an unknown `pattern` no longer breaks the card), a
+missing/broken `image` falls back to a generated initials avatar, and
+cards are sent with CDN-friendly `Cache-Control` headers.
+

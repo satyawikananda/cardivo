@@ -1,7 +1,7 @@
 {
   "name": "cardivo",
   "version": "0.1.0",
-  "description": "Get your card name and put it in your magic readme 📇",
+  "description": "Get your card name and put it in your magic readme \ud83d\udcc7",
   "main": "index.js",
   "author": "Satya Wikananda",
   "license": "MIT",
@@ -9,7 +9,10 @@
     "deploy:dev": "vercel",
     "deploy:prod": "vercel --prod",
     "develop": "vercel dev",
-    "test": "jest"
+    "test": "jest",
+    "dev:netlify": "netlify dev",
+    "dev:cloudflare": "wrangler dev",
+    "deploy:cloudflare": "wrangler deploy"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
@@ -18,7 +21,8 @@
     "jest": "^26.6.3",
     "prettier": "^2.1.2",
     "ts-jest": "^26.4.4",
-    "typescript": "^4.0.5"
+    "typescript": "^4.0.5",
+    "wrangler": "^3.90.0"
   },
   "dependencies": {
     "hero-patterns": "^2.1.0",
