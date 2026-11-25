@@ -1,0 +1,13 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["fonts/**"]
+
+# Same public API shape as Vercel: /api?... -> the function
+[[redirects]]
+  from = "/api"
+  to = "/.netlify/functions/api"
+  status = 200

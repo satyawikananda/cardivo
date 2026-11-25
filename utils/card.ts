@@ -1,7 +1,6 @@
 import { Icons, ParsedRequest } from "../typings/types"
-import { css } from './getCss'
 
-export function cardRender(parsedRequest: ParsedRequest) {
+export function cardRender(parsedRequest: ParsedRequest, cssText: string) {
   const {
     name,
     description,
@@ -81,7 +80,7 @@ export function cardRender(parsedRequest: ParsedRequest) {
               </div>
             </div>
         </foreignObject>
-        <style>${css({ backgroundColor, pattern, opacity, colorPattern, fontColor })}</style>
+        <style>${cssText}</style>
       </svg>
   `
 }

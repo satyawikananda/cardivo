@@ -1,5 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node';
 import { cardRender } from '../utils/card';
+import { css } from '../utils/getCss';
 import toBase64ImageUrl from "../utils/toBase64"
 
 export default async function render(req: NowRequest, res: NowResponse) {
@@ -30,7 +31,7 @@ export default async function render(req: NowRequest, res: NowResponse) {
             _github,
             _twitter,
             __disableAnimation
-        });
+        }, css({ backgroundColor, pattern, opacity, colorPattern, fontColor }));
 
         res.setHeader('Content-type', 'image/svg+xml');
         return res.send(card);
