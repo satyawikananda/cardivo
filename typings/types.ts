@@ -39,4 +39,9 @@ export interface ParsedRequest {
     _github?: string | string[]
     _twitter?: string | string[]
     __disableAnimation?: string | string[]
+    gradientColor?: string
+    gradientAngle?: number
+    align?: string
+    avatarShape?: string
+    width?: number
 }
