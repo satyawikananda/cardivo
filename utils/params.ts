@@ -47,7 +47,9 @@ const optionalColor = (v: any): string => {
 }
 
 const clampNumber = (v: any, min: number, max: number, def: number): number => {
-    const n = Number(first(v))
+    const raw = first(v).trim()
+    if (!raw) return def
+    const n = Number(raw)
     return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : def
 }
 
@@ -56,7 +58,8 @@ const clampNumber = (v: any, min: number, max: number, def: number): number => {
 // input degrades to safe defaults instead of a broken card.
 export const parseCardParams = (q: Record<string, any>): CardParams => {
     const patternRaw = first(q.pattern)
-    const pattern = PATTERNS.includes(patternRaw) ? patternRaw : undefined
+    const normalizedPattern = patternRaw === "polkadots" ? "polkaDots" : patternRaw
+    const pattern = PATTERNS.includes(normalizedPattern) ? normalizedPattern : undefined
     const opacityNum = clampNumber(q.opacity, 0, 1, 0.4)
 
     const css: CardCssParams = {

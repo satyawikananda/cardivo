@@ -49,7 +49,7 @@
   .switch input:checked + .track{background:var(--accent);border-color:var(--accent)}
   .switch input:checked + .track:before{transform:translateX(19px);background:#fff}
   .presets{display:flex;flex-wrap:wrap;gap:8px}
-  .preset{border:1px solid var(--line);border-radius:10px;padding:7px 11px;font-size:12.5px;cursor:pointer;color:#fff}
+  .preset{border:1px solid var(--line);border-radius:10px;padding:7px 11px;font-size:12.5px;cursor:pointer;color:#fff;text-shadow:0 1px 3px #000,0 0 5px #000}
   .previewwrap{background:repeating-conic-gradient(#171c28 0% 25%, #12161f 0% 50%) 0 0/22px 22px;border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;justify-content:center}
   .previewwrap img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 14px 44px rgba(0,0,0,.5)}
   .outfield{margin-top:14px}
@@ -102,27 +102,25 @@
     </section>
     <section class="panel">
       <h2>Design</h2>
-      <div class="field"><label>Background color</label><div class="colorrow"><input type="color" id="backgroundColor_c"><input type="text" id="backgroundColor"></div></div>
-      <div class="switchrow"><span>Gradient background</span><label class="switch"><input type="checkbox" id="gradientOn"><span class="track"></span></label></div>
+      <div class="field"><label>Background color</label><div class="colorrow"><input type="color" id="backgroundColor_c" aria-label="Background color picker"><input type="text" id="backgroundColor" aria-label="Background color value"></div></div>
+      <div class="switchrow"><label for="gradientOn">Gradient background</label><label class="switch"><input type="checkbox" id="gradientOn"><span class="track"></span></label></div>
       <div id="gradientFields">
-        <div class="field"><label>Gradient color</label><div class="colorrow"><input type="color" id="gradientColor_c"><input type="text" id="gradientColor"></div></div>
-        <div class="field"><label>Gradient angle — <span id="gradientAngleVal"></span>°</label><input type="range" id="gradientAngle" min="0" max="360" step="5"></div>
+        <div class="field"><label>Gradient color</label><div class="colorrow"><input type="color" id="gradientColor_c" aria-label="Gradient color picker"><input type="text" id="gradientColor" aria-label="Gradient color value"></div></div>
+        <div class="field"><label for="gradientAngle">Gradient angle — <span id="gradientAngleVal"></span>°</label><input type="range" id="gradientAngle" min="0" max="360" step="5"></div>
       </div>
       <div class="field"><label for="pattern">Pattern</label><select id="pattern"></select></div>
-      <div class="field"><label>Pattern color</label><div class="colorrow"><input type="color" id="colorPattern_c"><input type="text" id="colorPattern"></div></div>
-      <div class="field"><label>Pattern opacity — <span id="opacityVal"></span></label><input type="range" id="opacity" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>Pattern color</label><div class="colorrow"><input type="color" id="colorPattern_c" aria-label="Pattern color picker"><input type="text" id="colorPattern" aria-label="Pattern color value"></div></div>
+      <div class="field"><label for="opacity">Pattern opacity — <span id="opacityVal"></span></label><input type="range" id="opacity" min="0" max="1" step="0.05"></div>
       <div class="row">
-        <div class="field"><label>Font color</label><div class="colorrow"><input type="color" id="fontColor_c"><input type="text" id="fontColor"></div></div>
-        <div class="field"><label>Icon color</label><div class="colorrow"><input type="color" id="iconColor_c"><input type="text" id="iconColor"></div></div>
+        <div class="field"><label>Font color</label><div class="colorrow"><input type="color" id="fontColor_c" aria-label="Font color picker"><input type="text" id="fontColor" aria-label="Font color value"></div></div>
+        <div class="field"><label>Icon color</label><div class="colorrow"><input type="color" id="iconColor_c" aria-label="Icon color picker"><input type="text" id="iconColor" aria-label="Icon color value"></div></div>
       </div>
       <div class="row">
         <div class="field"><label>Text alignment</label><div class="seg" id="alignSeg"><button data-v="center" type="button">Center</button><button data-v="left" type="button">Left</button></div></div>
         <div class="field"><label>Avatar shape</label><div class="seg" id="shapeSeg"><button data-v="circle" type="button">Circle</button><button data-v="rounded" type="button">Rounded</button><button data-v="square" type="button">Square</button></div></div>
       </div>
-      <div class="field"><label for="width">Card width (px)</label><select id="width">
-        <option value="640">640</option><option value="800">800</option><option value="980">980</option><option value="1200">1200</option><option value="1600">1600</option>
-      </select></div>
-      <div class="switchrow"><span>Entrance animation</span><label class="switch"><input type="checkbox" id="animOn" checked><span class="track"></span></label></div>
+      <div class="field"><label for="width">Card width (px)</label><input type="number" id="width" min="200" max="2400" step="1"></div>
+      <div class="switchrow"><label for="animOn">Entrance animation</label><label class="switch"><input type="checkbox" id="animOn" checked><span class="track"></span></label></div>
     </section>
   </div>
   <div class="stack">
@@ -202,16 +200,17 @@ function buildUrl(){
 let timer;
 function refresh(){
   clearTimeout(timer);
+  const url = buildUrl();
+  $("openBtn").href = url;
+  $("outUrl").value = url;
+  $("outMd").value = "![" + (state.name||"card") + "'s card](" + url + ")";
+  const safeName = (state.name||"card").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#39;");
+  $("outHtml").value = '<img src="' + url + '" alt="' + safeName + "'s card\" width=\"" + state.width + '">';
+  $("gradientAngleVal").textContent = state.gradientAngle;
+  $("opacityVal").textContent = Number(state.opacity).toFixed(2);
+  $("gradientFields").style.display = state.gradientOn ? "" : "none";
   timer = setTimeout(()=>{
-    const url = buildUrl();
     $("preview").src = url;
-    $("openBtn").href = url;
-    $("outUrl").value = url;
-    $("outMd").value = "![" + (state.name||"card") + "'s card](" + url + ")";
-    $("outHtml").value = '<img src="' + url + '" alt="' + (state.name||"card") + "'s card\" width=\"" + state.width + '">';
-    $("gradientAngleVal").textContent = state.gradientAngle;
-    $("opacityVal").textContent = Number(state.opacity).toFixed(2);
-    $("gradientFields").style.display = state.gradientOn ? "" : "none";
   }, 200);
 }
 function syncInputs(){
@@ -247,18 +246,20 @@ function init(){
   $("gradientAngle").addEventListener("input", e=>{ state.gradientAngle=e.target.value; refresh(); });
   sel.addEventListener("change", e=>{ state.pattern=e.target.value; refresh(); });
   $("opacity").addEventListener("input", e=>{ state.opacity=e.target.value; refresh(); });
-  $("width").addEventListener("change", e=>{ state.width=e.target.value; refresh(); });
+  $("width").addEventListener("input", e=>{ state.width=e.target.value; refresh(); });
   $("animOn").addEventListener("change", e=>{ state.animOn=e.target.checked; refresh(); });
   document.querySelectorAll("#alignSeg button").forEach(b=> b.onclick=()=>{ state.align=b.dataset.v; syncInputs(); });
   document.querySelectorAll("#shapeSeg button").forEach(b=> b.onclick=()=>{ state.avatarShape=b.dataset.v; syncInputs(); });
   $("ghbtn").onclick=()=>{ const u=$("ghuser").value.trim(); if(u){ state.image="https://github.com/"+u+".png"; state.github=state.github||u; syncInputs(); } };
   document.querySelectorAll(".copybtn").forEach(b=> b.onclick=async ()=>{
+    refresh();
     const t=$(b.dataset.t); t.select(); try{ await navigator.clipboard.writeText(t.value); }catch(e){ document.execCommand("copy"); }
     const old=b.textContent; b.textContent="Copied!"; b.classList.add("copied"); setTimeout(()=>{ b.textContent=old; b.classList.remove("copied"); },1400);
   });
   $("downloadBtn").onclick=async ()=>{
-    const r = await fetch(buildUrl()); const blob = await r.blob();
-    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="cardivo-card.svg"; a.click(); URL.revokeObjectURL(a.href);
+    try { const r = await fetch(buildUrl()); if(!r.ok) throw new Error("Card generation failed ("+r.status+")"); const blob = await r.blob();
+      const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="cardivo-card.svg"; a.click(); URL.revokeObjectURL(a.href);
+    } catch(e) { alert("Unable to download the card. Please try again."); }
   };
   $("randomBtn").onclick=()=>{ const pr=PRESETS[Math.floor(Math.random()*PRESETS.length)];
     state.backgroundColor=pr.bg; state.gradientOn=!!pr.grad; if(pr.grad) state.gradientColor=pr.grad;

@@ -1,5 +1,6 @@
 import { arrayBufferToBase64 } from "./base64"
 import toBase64ImageUrl from "./toBase64"
+import { escapeXml } from "./escape"
 
 // Generated fallback avatar: a colored circle with the person's initials.
 // Used when no image URL is given or the image cannot be fetched, so the
@@ -12,7 +13,7 @@ export const initialsAvatar = (name: string): string => {
     let hash = 0
     for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0
     const bg = PALETTE[hash % PALETTE.length]
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><rect width="300" height="300" fill="${bg}"/><text x="50%" y="50%" dy=".36em" text-anchor="middle" font-family="Arial, sans-serif" font-size="120" font-weight="bold" fill="#ffffff">${initials}</text></svg>`
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><rect width="300" height="300" fill="${bg}"/><text x="50%" y="50%" dy=".36em" text-anchor="middle" font-family="Arial, sans-serif" font-size="120" font-weight="bold" fill="#ffffff">${escapeXml(initials)}</text></svg>`
     return `data:image/svg+xml;base64,${arrayBufferToBase64(new TextEncoder().encode(svg).buffer)}`
 }
 

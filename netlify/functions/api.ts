@@ -15,13 +15,13 @@ export const handler = async (event: any) => {
             statusCode: 200,
             headers: {
                 'Content-Type': 'image/svg+xml',
-                'Cache-Control': CARD_CACHE_CONTROL
+                'Cache-Control': card._image.startsWith('data:image/svg+xml;base64,') ? 'no-store' : CARD_CACHE_CONTROL
             },
             body: cardRender(card, css(cssParams))
         };
     } catch (e: any) {
         return {
-            statusCode: 200,
+            statusCode: 500,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: 'err', message: e.message })
         };

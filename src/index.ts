@@ -17,7 +17,7 @@ export default {
             return new Response(null, { status: 204 });
         }
 
-        if (url.pathname !== '/api') {
+        if (url.pathname === '/') {
             return new Response(studioHtml, {
                 headers: {
                     'Content-Type': 'text/html; charset=utf-8',
@@ -25,24 +25,23 @@ export default {
                 }
             });
         }
+        if (url.pathname !== '/api') return new Response('Not found', { status: 404 });
 
         try {
-            const get = (key: string) => url.searchParams.get(key) ?? undefined;
             const query: Record<string, any> = {};
-            for (const key of ['name', 'description', 'image', 'backgroundColor', 'gradientColor', 'gradientAngle', 'iconColor', 'site', 'fontColor', 'pattern', 'opacity', 'colorPattern', 'instagram', 'linkedin', 'github', 'twitter', 'disableAnimation', 'align', 'avatarShape', 'width']) {
-                query[key] = get(key);
-            }
+            url.searchParams.forEach((value, key) => { query[key] = value })
             const { card, css: cssParams, imageUrl } = parseCardParams(query);
             card._image = await resolveImage(imageUrl, String(card.name));
 
             return new Response(cardRender(card, css(cssParams)), {
                 headers: {
                     'Content-Type': 'image/svg+xml',
-                    'Cache-Control': CARD_CACHE_CONTROL
+                    'Cache-Control': card._image.startsWith('data:image/svg+xml;base64,') ? 'no-store' : CARD_CACHE_CONTROL
                 }
             });
         } catch (e: any) {
             return new Response(JSON.stringify({ status: 'err', message: e.message }), {
+                status: 500,
                 headers: { 'Content-Type': 'application/json' }
             });
         }

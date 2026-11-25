@@ -10,9 +10,10 @@ export default async function render(req: NowRequest, res: NowResponse) {
         card._image = await resolveImage(imageUrl, String(card.name));
 
         res.setHeader('Content-type', 'image/svg+xml');
-        res.setHeader('Cache-Control', CARD_CACHE_CONTROL);
+        res.setHeader('Cache-Control', card._image.startsWith('data:image/svg+xml;base64,') ? 'no-store' : CARD_CACHE_CONTROL);
         return res.send(cardRender(card, css(cssParams)));
-    } catch (e) {
+    } catch (e: any) {
+        res.status(500);
         return res.send({
             status: 'err',
             message: e.message
