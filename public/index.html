@@ -17,7 +17,7 @@
   ::selection{background:var(--ink);color:var(--paper)}
 
   header{border-bottom:2px solid var(--line);padding:18px 26px 14px;display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
-  .wordmark{font-size:30px;font-weight:800;letter-spacing:-1px;text-transform:uppercase;line-height:1}
+  .wordmark{margin:0;font-size:30px;font-weight:800;letter-spacing:-1px;text-transform:uppercase;line-height:1}
   .wordmark sup{font-size:11px;font-weight:400;letter-spacing:0}
   header .tag{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--grey)}
   header .spacer{flex:1}
@@ -42,10 +42,11 @@
   .field input[type=text],.field input[type=number],.field textarea,.field select{
     width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--ink);
     padding:6px 0;font-size:14px;font-family:inherit;outline:none}
-  .field textarea{resize:vertical;min-height:52px;border:1px solid var(--hair);padding:8px}
+  .field textarea{resize:vertical;min-height:52px;border:1px solid var(--grey);padding:8px}
   .field select{cursor:pointer}
   .field input:focus,.field textarea:focus{border-color:var(--ink);border-bottom-width:2px}
   .field textarea:focus{border-width:1px;outline:1px solid var(--ink)}
+  .field select:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   .row{display:flex;gap:16px}.row>.field{flex:1}
   .colorrow{display:flex;gap:8px;align-items:center}
   .colorrow input[type=color]{width:30px;height:30px;border:1px solid var(--line);background:transparent;padding:2px;cursor:pointer;flex:none}
@@ -101,7 +102,7 @@
 </head>
 <body>
 <header>
-  <div class="wordmark">Cardivo<sup>®</sup></div>
+  <h1 class="wordmark">Cardivo<sup>®</sup></h1>
   <div class="tag">SVG name cards — set in type, served as one link</div>
   <div class="spacer"></div>
   <nav><a href="#api">API</a><a href="https://github.com/SaeedX302/cardivo" target="_blank" rel="noopener">GitHub</a></nav>
@@ -149,7 +150,7 @@
         <div class="field"><label>Avatar shape</label><div class="seg" id="shapeSeg"><button data-v="circle" type="button">Circle</button><button data-v="rounded" type="button">Rounded</button><button data-v="square" type="button">Square</button></div></div>
       </div>
       <div class="field"><label for="width">Card width (px)</label><input type="number" id="width" min="200" max="2400" step="1"></div>
-      <div class="checkrow"><input type="checkbox" id="animOn" checked><label for="animOn">Entrance animation</label><span class="hint">fade + rise</span></div>
+      <div class="checkrow"><input type="checkbox" id="animOn" checked><label for="animOn">Entrance animation</label><span class="hint">slide in</span></div>
     </section>
   </div>
   <div class="col right">
