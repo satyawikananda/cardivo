@@ -1,11 +1,274 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Cardivo</title>
-<meta http-equiv="refresh" content="0; url=https://github.com/satyawikananda/cardivo">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardivo Studio — SVG name card generator</title>
+<meta name="description" content="Design your Cardivo SVG name card with a live preview, then embed it anywhere with one link.">
+<style>
+  :root{
+    --bg:#0b0e14; --panel:#12161f; --panel2:#171c28; --line:#232a3a;
+    --text:#e8ecf4; --muted:#8b94a7; --accent:#e63946; --accent2:#3a86ff;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif}
+  a{color:var(--accent2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  header{display:flex;align-items:center;gap:14px;padding:16px 26px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,14,20,.92);backdrop-filter:blur(8px);z-index:10}
+  .logo{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#8338ec);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#fff}
+  header h1{font-size:19px;margin:0;letter-spacing:.2px}
+  header p{margin:0;color:var(--muted);font-size:12.5px}
+  header .spacer{flex:1}
+  .btn{display:inline-flex;align-items:center;gap:7px;background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:8px 14px;border-radius:10px;font-size:13px;cursor:pointer;transition:.15s}
+  .btn:hover{border-color:var(--accent2)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary:hover{background:#c92a38}
+  main{display:grid;grid-template-columns:400px 1fr;gap:20px;padding:20px 26px;max-width:1460px;margin:0 auto}
+  @media (max-width:960px){main{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .panel h2{font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin:0 0 14px}
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px}
+  .field input[type=text],.field textarea,.field select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:9px;padding:8px 10px;font-size:13.5px;font-family:inherit}
+  .field textarea{resize:vertical;min-height:56px}
+  .row{display:flex;gap:10px}.row>.field{flex:1}
+  .colorrow{display:flex;gap:8px;align-items:center}
+  .colorrow input[type=color]{width:42px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);padding:2px;cursor:pointer}
+  .colorrow input[type=text]{flex:1}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  .seg{display:flex;background:var(--panel2);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;color:var(--muted);padding:8px 4px;font-size:12.5px;cursor:pointer}
+  .seg button.on{background:var(--accent);color:#fff}
+  .switchrow{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+  .switchrow > span,.switchrow > label:not(.switch){font-size:13.5px}
+  .switch{position:relative;width:42px;height:23px;flex:none}
+  .switch input{opacity:0;width:0;height:0}
+  .track{position:absolute;inset:0;background:var(--panel2);border:1px solid var(--line);border-radius:99px;cursor:pointer;transition:.15s}
+  .track:before{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:var(--muted);top:2.5px;left:3px;transition:.15s}
+  .switch input:checked + .track{background:var(--accent);border-color:var(--accent)}
+  .switch input:checked + .track:before{transform:translateX(19px);background:#fff}
+  .presets{display:flex;flex-wrap:wrap;gap:8px}
+  .preset{border:1px solid var(--line);border-radius:10px;padding:7px 11px;font-size:12.5px;cursor:pointer;color:#fff;text-shadow:0 1px 3px #000,0 0 5px #000}
+  .previewwrap{background:repeating-conic-gradient(#171c28 0% 25%, #12161f 0% 50%) 0 0/22px 22px;border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;justify-content:center}
+  .previewwrap img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 14px 44px rgba(0,0,0,.5)}
+  .outfield{margin-top:14px}
+  .outfield label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px}
+  .outrow{display:flex;gap:8px}
+  .outrow input,.outrow textarea{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:9px;padding:8px 10px;font-size:12.5px;font-family:ui-monospace,Consolas,monospace}
+  .outrow textarea{resize:vertical;min-height:38px}
+  .copied{color:#2a9d8f!important;border-color:#2a9d8f!important}
+  table.params{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.params td,table.params th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+  table.params th{color:var(--muted);font-weight:600}
+  code{background:var(--panel2);padding:1px 6px;border-radius:6px;font-size:12px}
+  footer{padding:22px 26px 34px;color:var(--muted);font-size:12.5px;text-align:center}
+  .stack{display:flex;flex-direction:column;gap:20px}
+  .ghrow{display:flex;gap:8px}.ghrow input{flex:1}
+</style>
 </head>
 <body>
-<p>Cardivo — see <a href="https://github.com/satyawikananda/cardivo">github.com/satyawikananda/cardivo</a>. The card API is at <code>/api</code>.</p>
+<header>
+  <div class="logo">C</div>
+  <div>
+    <h1>Cardivo Studio</h1>
+    <p>Design your SVG name card — live preview, one embed link.</p>
+  </div>
+  <div class="spacer"></div>
+  <a class="btn" href="https://github.com/SaeedX302/cardivo" target="_blank" rel="noopener">GitHub repo</a>
+</header>
+<main>
+  <div class="stack">
+    <section class="panel">
+      <h2>Presets</h2>
+      <div class="presets" id="presets"></div>
+    </section>
+    <section class="panel">
+      <h2>Content</h2>
+      <div class="field"><label for="name">Name</label><input type="text" id="name" maxlength="80"></div>
+      <div class="field"><label for="description">Description</label><textarea id="description" maxlength="220"></textarea></div>
+      <div class="field"><label for="image">Image URL</label><input type="text" id="image" placeholder="https://…">
+        <div class="ghrow" style="margin-top:8px"><input type="text" id="ghuser" placeholder="GitHub username"><button class="btn" id="ghbtn" type="button">Use GitHub avatar</button></div>
+      </div>
+      <div class="field"><label for="site">Website</label><input type="text" id="site" placeholder="yoursite.com"></div>
+      <div class="row">
+        <div class="field"><label for="github">GitHub</label><input type="text" id="github"></div>
+        <div class="field"><label for="twitter">Twitter / X</label><input type="text" id="twitter"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="instagram">Instagram</label><input type="text" id="instagram"></div>
+        <div class="field"><label for="linkedin">LinkedIn</label><input type="text" id="linkedin"></div>
+      </div>
+    </section>
+    <section class="panel">
+      <h2>Design</h2>
+      <div class="field"><label>Background color</label><div class="colorrow"><input type="color" id="backgroundColor_c" aria-label="Background color picker"><input type="text" id="backgroundColor" aria-label="Background color value"></div></div>
+      <div class="switchrow"><label for="gradientOn">Gradient background</label><label class="switch"><input type="checkbox" id="gradientOn"><span class="track"></span></label></div>
+      <div id="gradientFields">
+        <div class="field"><label>Gradient color</label><div class="colorrow"><input type="color" id="gradientColor_c" aria-label="Gradient color picker"><input type="text" id="gradientColor" aria-label="Gradient color value"></div></div>
+        <div class="field"><label for="gradientAngle">Gradient angle — <span id="gradientAngleVal"></span>°</label><input type="range" id="gradientAngle" min="0" max="360" step="5"></div>
+      </div>
+      <div class="field"><label for="pattern">Pattern</label><select id="pattern"></select></div>
+      <div class="field"><label>Pattern color</label><div class="colorrow"><input type="color" id="colorPattern_c" aria-label="Pattern color picker"><input type="text" id="colorPattern" aria-label="Pattern color value"></div></div>
+      <div class="field"><label for="opacity">Pattern opacity — <span id="opacityVal"></span></label><input type="range" id="opacity" min="0" max="1" step="0.05"></div>
+      <div class="row">
+        <div class="field"><label>Font color</label><div class="colorrow"><input type="color" id="fontColor_c" aria-label="Font color picker"><input type="text" id="fontColor" aria-label="Font color value"></div></div>
+        <div class="field"><label>Icon color</label><div class="colorrow"><input type="color" id="iconColor_c" aria-label="Icon color picker"><input type="text" id="iconColor" aria-label="Icon color value"></div></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Text alignment</label><div class="seg" id="alignSeg"><button data-v="center" type="button">Center</button><button data-v="left" type="button">Left</button></div></div>
+        <div class="field"><label>Avatar shape</label><div class="seg" id="shapeSeg"><button data-v="circle" type="button">Circle</button><button data-v="rounded" type="button">Rounded</button><button data-v="square" type="button">Square</button></div></div>
+      </div>
+      <div class="field"><label for="width">Card width (px)</label><input type="number" id="width" min="200" max="2400" step="1"></div>
+      <div class="switchrow"><label for="animOn">Entrance animation</label><label class="switch"><input type="checkbox" id="animOn" checked><span class="track"></span></label></div>
+    </section>
+  </div>
+  <div class="stack">
+    <section class="panel">
+      <h2>Live preview</h2>
+      <div class="previewwrap"><img id="preview" alt="Cardivo card preview"></div>
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn primary" id="downloadBtn" type="button">Download SVG</button>
+        <a class="btn" id="openBtn" href="#" target="_blank" rel="noopener">Open full size</a>
+        <button class="btn" id="randomBtn" type="button">Surprise me</button>
+      </div>
+      <div class="outfield"><label>Card URL</label><div class="outrow"><input type="text" id="outUrl" readonly><button class="btn copybtn" data-t="outUrl" type="button">Copy</button></div></div>
+      <div class="outfield"><label>Markdown (GitHub README)</label><div class="outrow"><textarea id="outMd" readonly></textarea><button class="btn copybtn" data-t="outMd" type="button">Copy</button></div></div>
+      <div class="outfield"><label>HTML</label><div class="outrow"><textarea id="outHtml" readonly></textarea><button class="btn copybtn" data-t="outHtml" type="button">Copy</button></div></div>
+    </section>
+    <section class="panel">
+      <h2>API parameters</h2>
+      <table class="params">
+        <tr><th>Parameter</th><th>What it does</th></tr>
+        <tr><td><code>name</code></td><td>Big title text (default “Your Name”)</td></tr>
+        <tr><td><code>description</code></td><td>Subtitle text under the name</td></tr>
+        <tr><td><code>image</code></td><td>Avatar image URL — falls back to a generated initials avatar if it cannot load</td></tr>
+        <tr><td><code>backgroundColor</code></td><td>Card background hex color</td></tr>
+        <tr><td><code>gradientColor</code> · <code>gradientAngle</code></td><td>Optional second color for a linear gradient background</td></tr>
+        <tr><td><code>pattern</code> · <code>colorPattern</code> · <code>opacity</code></td><td>Hero pattern overlay, its color and opacity</td></tr>
+        <tr><td><code>fontColor</code> · <code>iconColor</code></td><td>Text color and social icon color</td></tr>
+        <tr><td><code>github</code> · <code>twitter</code> · <code>instagram</code> · <code>linkedin</code> · <code>site</code></td><td>Social handles / website shown on the card</td></tr>
+        <tr><td><code>align</code></td><td><code>center</code> (default) or <code>left</code></td></tr>
+        <tr><td><code>avatarShape</code></td><td><code>circle</code> (default), <code>rounded</code> or <code>square</code></td></tr>
+        <tr><td><code>width</code></td><td>SVG width in px, 200–2400 (default 980, height scales 2:1)</td></tr>
+        <tr><td><code>disableAnimation</code></td><td><code>true</code> disables the entrance animation</td></tr>
+      </table>
+    </section>
+  </div>
+</main>
+<footer>Cardivo — SVG name cards as a service. Built with the Cardivo API · <a href="https://github.com/SaeedX302/cardivo" target="_blank" rel="noopener">Source on GitHub</a></footer>
+<script>
+const PATTERNS = ["plus","topography","texture","hideout","fallingTriangles","iLikeFood","fourPointStars","brickWall","wiggle","bubbles","floatingCogs","leaf","rain","polkaDots","ticTacToe"];
+const PRESETS = [
+  {label:"Classic", bg:"#ecf0f1", grad:"", pattern:"leaf", pc:"#eaeaea", op:0.4, font:"#000000", icon:"#000000", chip:"linear-gradient(135deg,#ecf0f1,#dfe6ea)"},
+  {label:"Midnight", bg:"#0f2027", grad:"#2c5364", pattern:"topography", pc:"#ffffff", op:0.15, font:"#ffffff", icon:"#ffffff", chip:"linear-gradient(135deg,#0f2027,#2c5364)"},
+  {label:"Sunset", bg:"#ff9966", grad:"#ff5e62", pattern:"bubbles", pc:"#ffffff", op:0.25, font:"#ffffff", icon:"#ffffff", chip:"linear-gradient(135deg,#ff9966,#ff5e62)"},
+  {label:"Ocean", bg:"#1a2980", grad:"#26d0ce", pattern:"wiggle", pc:"#ffffff", op:0.2, font:"#ffffff", icon:"#ffffff", chip:"linear-gradient(135deg,#1a2980,#26d0ce)"},
+  {label:"Forest", bg:"#134e5e", grad:"#71b280", pattern:"leaf", pc:"#ffffff", op:0.2, font:"#ffffff", icon:"#ffffff", chip:"linear-gradient(135deg,#134e5e,#71b280)"},
+  {label:"Grape", bg:"#41295a", grad:"#ff9966", pattern:"fourPointStars", pc:"#ffffff", op:0.2, font:"#ffffff", icon:"#ffffff", chip:"linear-gradient(135deg,#41295a,#ff9966)"},
+  {label:"Mono", bg:"#fdfcf8", grad:"", pattern:"plus", pc:"#e5e2d8", op:0.8, font:"#1c1c1c", icon:"#1c1c1c", chip:"linear-gradient(135deg,#fdfcf8,#eceae2)"},
+  {label:"Candy", bg:"#ff9a9e", grad:"#a18cd1", pattern:"polkaDots", pc:"#ffffff", op:0.35, font:"#ffffff", icon:"#ffffff", chip:"linear-gradient(135deg,#ff9a9e,#a18cd1)"}
+];
+const $ = id => document.getElementById(id);
+const state = {
+  name:"Zizu", description:"Building playful things for the web",
+  image:"https://github.com/SaeedX302.png", site:"tsunstudio.cyou",
+  github:"SaeedX302", twitter:"", instagram:"", linkedin:"",
+  backgroundColor:"#ecf0f1", gradientOn:false, gradientColor:"#3a86ff", gradientAngle:135,
+  pattern:"leaf", colorPattern:"#eaeaea", opacity:0.4,
+  fontColor:"#000000", iconColor:"#000000",
+  align:"center", avatarShape:"circle", width:"980", animOn:true
+};
+const TEXT_FIELDS = ["name","description","image","site","github","twitter","instagram","linkedin"];
+const COLOR_FIELDS = ["backgroundColor","gradientColor","colorPattern","fontColor","iconColor"];
+
+function buildUrl(){
+  const p = new URLSearchParams();
+  const set = (k,v)=>{ if(v!==undefined && v!==null && String(v)!=="") p.set(k, String(v)); };
+  set("name", state.name); set("description", state.description); set("image", state.image);
+  set("backgroundColor", state.backgroundColor);
+  if(state.gradientOn){ set("gradientColor", state.gradientColor); set("gradientAngle", state.gradientAngle); }
+  if(state.pattern) { set("pattern", state.pattern); set("colorPattern", state.colorPattern); set("opacity", state.opacity); }
+  set("fontColor", state.fontColor); set("iconColor", state.iconColor);
+  set("github", state.github); set("twitter", state.twitter); set("instagram", state.instagram); set("linkedin", state.linkedin); set("site", state.site);
+  if(state.align!=="center") set("align", state.align);
+  if(state.avatarShape!=="circle") set("avatarShape", state.avatarShape);
+  if(state.width!=="980") set("width", state.width);
+  if(!state.animOn) set("disableAnimation","true");
+  return location.origin + "/api?" + p.toString();
+}
+let timer;
+function refresh(){
+  clearTimeout(timer);
+  const url = buildUrl();
+  $("openBtn").href = url;
+  $("outUrl").value = url;
+  const markdownName = (state.name||"card").replace(/[\\[\]]/g, char=>"\\"+char).replace(/[\r\n]+/g," ");
+  $("outMd").value = "![" + markdownName + "'s card](" + url + ")";
+  const safeName = (state.name||"card").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#39;");
+  $("outHtml").value = '<img src="' + url + '" alt="' + safeName + "'s card\" width=\"" + (state.width || 980) + '">';
+  $("gradientAngleVal").textContent = state.gradientAngle;
+  $("opacityVal").textContent = Number(state.opacity).toFixed(2);
+  $("gradientFields").style.display = state.gradientOn ? "" : "none";
+  timer = setTimeout(()=>{
+    $("preview").src = url;
+  }, 200);
+}
+function syncInputs(){
+  TEXT_FIELDS.forEach(f=>{ $(f).value = state[f]; });
+  COLOR_FIELDS.forEach(f=>{ $(f).value = state[f]; $(f+"_c").value = state[f]; });
+  $("gradientOn").checked = state.gradientOn;
+  $("gradientAngle").value = state.gradientAngle;
+  $("pattern").value = state.pattern;
+  $("opacity").value = state.opacity;
+  $("width").value = state.width;
+  $("animOn").checked = state.animOn;
+  document.querySelectorAll("#alignSeg button").forEach(b=>b.classList.toggle("on", b.dataset.v===state.align));
+  document.querySelectorAll("#shapeSeg button").forEach(b=>b.classList.toggle("on", b.dataset.v===state.avatarShape));
+  refresh();
+}
+function init(){
+  const sel = $("pattern");
+  sel.innerHTML = '<option value="">None</option>' + PATTERNS.map(p=>'<option value="'+p+'">'+p+'</option>').join("");
+  const pw = $("presets");
+  PRESETS.forEach(pr=>{
+    const b = document.createElement("button");
+    b.type="button"; b.className="preset"; b.textContent=pr.label; b.style.background=pr.chip;
+    b.onclick=()=>{ state.backgroundColor=pr.bg; state.gradientOn=!!pr.grad; if(pr.grad) state.gradientColor=pr.grad;
+      state.pattern=pr.pattern; state.colorPattern=pr.pc; state.opacity=pr.op; state.fontColor=pr.font; state.iconColor=pr.icon; syncInputs(); };
+    pw.appendChild(b);
+  });
+  TEXT_FIELDS.forEach(f=> $(f).addEventListener("input", e=>{ state[f]=e.target.value; refresh(); }));
+  COLOR_FIELDS.forEach(f=>{
+    $(f+"_c").addEventListener("input", e=>{ state[f]=e.target.value; $(f).value=state[f]; refresh(); });
+    $(f).addEventListener("input", e=>{ let v=e.target.value.trim(); if(v && v[0]!=="#") v="#"+v; state[f]=v; if(/^#[0-9a-fA-F]{6}$/.test(v)) $(f+"_c").value=v; refresh(); });
+  });
+  $("gradientOn").addEventListener("change", e=>{ state.gradientOn=e.target.checked; refresh(); });
+  $("gradientAngle").addEventListener("input", e=>{ state.gradientAngle=e.target.value; refresh(); });
+  sel.addEventListener("change", e=>{ state.pattern=e.target.value; refresh(); });
+  $("opacity").addEventListener("input", e=>{ state.opacity=e.target.value; refresh(); });
+  $("width").addEventListener("input", e=>{ state.width=e.target.value; refresh(); });
+  $("animOn").addEventListener("change", e=>{ state.animOn=e.target.checked; refresh(); });
+  document.querySelectorAll("#alignSeg button").forEach(b=> b.onclick=()=>{ state.align=b.dataset.v; syncInputs(); });
+  document.querySelectorAll("#shapeSeg button").forEach(b=> b.onclick=()=>{ state.avatarShape=b.dataset.v; syncInputs(); });
+  $("ghbtn").onclick=()=>{ const u=$("ghuser").value.trim(); if(u){ state.image="https://github.com/"+u+".png"; state.github=state.github||u; syncInputs(); } };
+  document.querySelectorAll(".copybtn").forEach(b=> b.onclick=async ()=>{
+    refresh();
+    const t=$(b.dataset.t); t.select(); try{ await navigator.clipboard.writeText(t.value); }catch(e){ document.execCommand("copy"); }
+    const old=b.textContent; b.textContent="Copied!"; b.classList.add("copied"); setTimeout(()=>{ b.textContent=old; b.classList.remove("copied"); },1400);
+  });
+  $("downloadBtn").onclick=async ()=>{
+    try { const r = await fetch(buildUrl()); if(!r.ok) throw new Error("Card generation failed ("+r.status+")"); const blob = await r.blob();
+      const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="cardivo-card.svg"; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    } catch(e) { alert("Unable to download the card. Please try again."); }
+  };
+  $("randomBtn").onclick=()=>{ const pr=PRESETS[Math.floor(Math.random()*PRESETS.length)];
+    state.backgroundColor=pr.bg; state.gradientOn=!!pr.grad; if(pr.grad) state.gradientColor=pr.grad;
+    state.pattern=pr.pattern; state.colorPattern=pr.pc; state.opacity=pr.op; state.fontColor=pr.font; state.iconColor=pr.icon;
+    state.avatarShape=["circle","rounded","square"][Math.floor(Math.random()*3)]; syncInputs(); };
+  syncInputs();
+}
+init();
+</script>
 </body>
 </html>

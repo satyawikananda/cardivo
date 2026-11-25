@@ -2,9 +2,14 @@ name = "cardivo"
 main = "src/index.ts"
 compatibility_date = "2024-09-23"
 
-# Import the Montserrat .woff2 fonts as ArrayBuffer so utils/getCss.ts
-# can inline them as base64 (Workers has no filesystem / readFileSync).
+# Import the Montserrat fonts as ArrayBuffer modules (utils/getCssWorkers.ts)
+# and the Studio frontend as a text module (src/index.ts serves public/index.html).
 [[rules]]
 type = "Data"
 globs = ["**/*.woff2"]
+fallthrough = true
+
+[[rules]]
+type = "Text"
+globs = ["**/*.html"]
 fallthrough = true

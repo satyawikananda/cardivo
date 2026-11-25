@@ -1,41 +1,19 @@
 import { NowRequest, NowResponse } from '@vercel/node';
 import { cardRender } from '../utils/card';
 import { css } from '../utils/getCss';
-import toBase64ImageUrl from "../utils/toBase64"
+import { parseCardParams, CARD_CACHE_CONTROL } from '../utils/params';
+import { resolveImage } from '../utils/avatar';
 
 export default async function render(req: NowRequest, res: NowResponse) {
     try {
-        const { name, description, image, backgroundColor, iconColor, site, fontColor, pattern, opacity, colorPattern, instagram, linkedin, github, twitter, disableAnimation  } = req.query;
-        
-        const _linkedin = linkedin ?? ''
-        const _instagram = instagram ?? ''
-        const _twitter = twitter ?? ''
-        const _github = github ?? ''
-        const _site = site ?? ''
-        const __disableAnimation = disableAnimation ?? 'false'
-        const _image = await toBase64ImageUrl(image)
-
-        const card = cardRender({
-            name,
-            description,
-            iconColor,
-            backgroundColor,
-            _image,
-            pattern,
-            colorPattern,
-            _site,
-            fontColor,
-            opacity,
-            _instagram,
-            _linkedin,
-            _github,
-            _twitter,
-            __disableAnimation
-        }, css({ backgroundColor, pattern, opacity, colorPattern, fontColor }));
+        const { card, css: cssParams, imageUrl } = parseCardParams(req.query as Record<string, any>);
+        card._image = await resolveImage(imageUrl, String(card.name));
 
         res.setHeader('Content-type', 'image/svg+xml');
-        return res.send(card);
-    } catch (e) {
+        res.setHeader('Cache-Control', card._image.startsWith('data:image/svg+xml;base64,') ? 'no-store' : CARD_CACHE_CONTROL);
+        return res.send(cardRender(card, css(cssParams)));
+    } catch (e: any) {
+        res.status(500);
         return res.send({
             status: 'err',
             message: e.message

@@ -5,7 +5,13 @@ import getPattern from "./bg-hero"
 // on Vercel/Netlify, wrangler imports on Cloudflare Workers), so the two
 // loaders in getCss.ts / getCssWorkers.ts pass the fonts in as base64 and
 // this builds the actual CSS.
-export const makeCss = (monserratRegular: string, monserrat700: string) => ({ backgroundColor, pattern, opacity, colorPattern , fontColor }): string => {
+export const makeCss = (monserratRegular: string, monserrat700: string) => ({ backgroundColor, gradientColor = "", gradientAngle = 135, pattern, opacity, colorPattern , fontColor }: { backgroundColor?: any; gradientColor?: string; gradientAngle?: number; pattern?: any; opacity?: any; colorPattern?: any; fontColor?: any }): string => {
+    // Background layers: optional hero pattern on top of a gradient or a
+    // flat color. The pattern is only added when it is a known pattern
+    // name (validated in utils/params.ts).
+    const layers: string[] = []
+    if (pattern != undefined) layers.push(getPattern(`${pattern}`, `${opacity}`, `${colorPattern}`))
+    if (gradientColor) layers.push(`linear-gradient(${gradientAngle}deg, ${backgroundColor}, ${gradientColor})`)
     return `
       @font-face{
         font-family: 'Montserrat';
@@ -52,7 +58,7 @@ export const makeCss = (monserratRegular: string, monserrat700: string) => ({ ba
       }
       .card-wrapper {
         background: ${backgroundColor};
-        ${pattern == undefined ? '' : `background-image: ${getPattern(`${pattern}`, `${opacity}`, `${colorPattern}`)};`}
+        ${layers.length ? `background-image: ${layers.join(", ")};` : ''}
         width: 640px !important;
         height: 320px !important;
         margin: 0;
