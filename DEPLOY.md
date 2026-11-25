@@ -16,7 +16,7 @@ fetch + base64, no Node-only APIs), `utils/base64.ts`, `utils/bg-hero.ts`.
 
 On every host the public API shape is identical:
 
-- `GET /` → redirects to the GitHub repo
+- `GET /` → the Cardivo Studio frontend (live card builder)
 - `GET /api?name=...&description=...&image=...` → the SVG name card
 
 ## Vercel
