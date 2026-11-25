@@ -1,63 +1,50 @@
 import { cardRender } from '../utils/card';
 import { css } from '../utils/getCssWorkers';
-import toBase64ImageUrl from '../utils/toBase64';
+import { parseCardParams, CARD_CACHE_CONTROL } from '../utils/params';
+import { resolveImage } from '../utils/avatar';
+// @ts-ignore - .html files are imported as text via wrangler rules (see wrangler.toml and typings/html.d.ts)
+import studioHtml from '../public/index.html';
 
 // Cloudflare Workers entry point.
-// - GET /            -> redirect to the GitHub repo (same as vercel.json)
-// - GET /api?...     -> the SVG name card (same query params as Vercel)
+// - /api returns the SVG card (same parameters as Vercel/Netlify)
+// - everything else serves the Cardivo Studio frontend (public/index.html),
+//   so the root URL is the live card builder instead of a redirect.
 export default {
     async fetch(request: Request): Promise<Response> {
         const url = new URL(request.url);
 
-        if (url.pathname === '/') {
-            return Response.redirect('https://github.com/satyawikananda/cardivo', 302);
+        if (url.pathname === '/favicon.ico') {
+            return new Response(null, { status: 204 });
         }
 
         if (url.pathname !== '/api') {
-            return new Response('Not found', { status: 404 });
+            return new Response(studioHtml, {
+                headers: {
+                    'Content-Type': 'text/html; charset=utf-8',
+                    'Cache-Control': 'public, max-age=300'
+                }
+            });
         }
 
         try {
-            const q = url.searchParams;
-            const get = (key: string) => q.get(key) ?? undefined;
+            const get = (key: string) => url.searchParams.get(key) ?? undefined;
+            const query: Record<string, any> = {};
+            for (const key of ['name', 'description', 'image', 'backgroundColor', 'gradientColor', 'gradientAngle', 'iconColor', 'site', 'fontColor', 'pattern', 'opacity', 'colorPattern', 'instagram', 'linkedin', 'github', 'twitter', 'disableAnimation', 'align', 'avatarShape', 'width']) {
+                query[key] = get(key);
+            }
+            const { card, css: cssParams, imageUrl } = parseCardParams(query);
+            card._image = await resolveImage(imageUrl, String(card.name));
 
-            const _image = await toBase64ImageUrl(get('image'));
-
-            const card = cardRender({
-                name: get('name'),
-                description: get('description'),
-                iconColor: get('iconColor'),
-                backgroundColor: get('backgroundColor'),
-                _image,
-                pattern: get('pattern'),
-                colorPattern: get('colorPattern'),
-                _site: get('site') ?? '',
-                fontColor: get('fontColor'),
-                opacity: get('opacity'),
-                _instagram: get('instagram') ?? '',
-                _linkedin: get('linkedin') ?? '',
-                _github: get('github') ?? '',
-                _twitter: get('twitter') ?? '',
-                __disableAnimation: get('disableAnimation') ?? 'false'
-            }, css({
-                backgroundColor: get('backgroundColor'),
-                pattern: get('pattern'),
-                opacity: get('opacity'),
-                colorPattern: get('colorPattern'),
-                fontColor: get('fontColor')
-            }));
-
-            return new Response(card, {
+            return new Response(cardRender(card, css(cssParams)), {
                 headers: {
                     'Content-Type': 'image/svg+xml',
-                    'Cache-Control': 'public, max-age=86400'
+                    'Cache-Control': CARD_CACHE_CONTROL
                 }
             });
         } catch (e: any) {
-            return new Response(
-                JSON.stringify({ status: 'err', message: e.message }),
-                { status: 500, headers: { 'Content-Type': 'application/json' } }
-            );
+            return new Response(JSON.stringify({ status: 'err', message: e.message }), {
+                headers: { 'Content-Type': 'application/json' }
+            });
         }
     }
 };
