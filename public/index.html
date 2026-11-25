@@ -41,7 +41,7 @@
   .seg button{flex:1;background:transparent;border:0;color:var(--muted);padding:8px 4px;font-size:12.5px;cursor:pointer}
   .seg button.on{background:var(--accent);color:#fff}
   .switchrow{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
-  .switchrow span{font-size:13.5px}
+  .switchrow > span,.switchrow > label:not(.switch){font-size:13.5px}
   .switch{position:relative;width:42px;height:23px;flex:none}
   .switch input{opacity:0;width:0;height:0}
   .track{position:absolute;inset:0;background:var(--panel2);border:1px solid var(--line);border-radius:99px;cursor:pointer;transition:.15s}
@@ -203,9 +203,10 @@ function refresh(){
   const url = buildUrl();
   $("openBtn").href = url;
   $("outUrl").value = url;
-  $("outMd").value = "![" + (state.name||"card") + "'s card](" + url + ")";
+  const markdownName = (state.name||"card").replace(/[\\[\]]/g, char=>"\\"+char).replace(/[\r\n]+/g," ");
+  $("outMd").value = "![" + markdownName + "'s card](" + url + ")";
   const safeName = (state.name||"card").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#39;");
-  $("outHtml").value = '<img src="' + url + '" alt="' + safeName + "'s card\" width=\"" + state.width + '">';
+  $("outHtml").value = '<img src="' + url + '" alt="' + safeName + "'s card\" width=\"" + (state.width || 980) + '">';
   $("gradientAngleVal").textContent = state.gradientAngle;
   $("opacityVal").textContent = Number(state.opacity).toFixed(2);
   $("gradientFields").style.display = state.gradientOn ? "" : "none";
@@ -258,7 +259,7 @@ function init(){
   });
   $("downloadBtn").onclick=async ()=>{
     try { const r = await fetch(buildUrl()); if(!r.ok) throw new Error("Card generation failed ("+r.status+")"); const blob = await r.blob();
-      const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="cardivo-card.svg"; a.click(); URL.revokeObjectURL(a.href);
+      const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="cardivo-card.svg"; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
     } catch(e) { alert("Unable to download the card. Please try again."); }
   };
   $("randomBtn").onclick=()=>{ const pr=PRESETS[Math.floor(Math.random()*PRESETS.length)];
